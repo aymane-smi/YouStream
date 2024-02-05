@@ -2,20 +2,20 @@ package com.example.demo.Models.Entites;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity(name="tags")
+@Entity(name="comments")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
-public class Tag {
+public class Comment {
     private long id;
-    private String tag_name;
-    @OneToMany(fetch = FetchType.LAZY)
-    private Tag tag;
+    private String comment;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Student student;
 }

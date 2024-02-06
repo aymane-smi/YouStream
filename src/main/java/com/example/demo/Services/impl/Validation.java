@@ -1,8 +1,8 @@
-package com.example.demo.Service.impl;
+package com.example.demo.Services.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.example.demo.Service.IValidation;
+import com.example.demo.Services.IValidation;
 
 @Service
 public class Validation implements IValidation{

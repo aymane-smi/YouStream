@@ -4,6 +4,7 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
 
 @MappedSuperclass
+@Data
 public abstract class User {
     protected String username;
     protected String firstName;

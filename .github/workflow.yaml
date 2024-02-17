@@ -1,0 +1,32 @@
+name: YouStream CI Config
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+,[0.9]+.*'
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    strategy:
+      java-version: '17'
+      cache: 'maven'
+      distribution: 'oracle'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checking repository
+        uses: actions/checkout@v4
+      - name: Install jdk 17
+        uses: actions/setups-java@v3
+        with:
+          version: java-version
+          distribution: distribution
+          cache: cache
+      - name:
+        run: mvn tests
+
+

@@ -10,10 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.Models.Entites.Admin;
-import com.example.demo.Models.Entites.Student;
 import com.example.demo.Models.Enums.Role;
 import com.example.demo.Repositories.AdminRepository;
-import com.example.demo.Repositories.StudentRepository;
 
 @Component
 public class AdminDetailsImpl implements UserDetailsService{

@@ -10,7 +10,9 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.Models.Entites.Student;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, Long>{
+public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query("SELECT s FROM Student s WHERE s.username = :username")
-    public Optional<Student> findByUser(@Param("username") String username);
+    public Optional<Student> findByUsername(@Param("username") String username);
+    @Query("select s.id FROM Student s WHERE s.username = :username")
+    public Optional<Long> findIdByUsername(@Param("username") String username);
 }

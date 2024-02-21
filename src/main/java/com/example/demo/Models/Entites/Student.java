@@ -36,6 +36,8 @@ public class Student extends User {
     List<Student> claimers;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Stream> streams;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<StudentRefreshToken> refreshTokens;
     @Enumerated(EnumType.STRING)
     private Role role;
 }

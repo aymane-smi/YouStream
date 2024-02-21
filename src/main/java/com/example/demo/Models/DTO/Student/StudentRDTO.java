@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.example.demo.Models.Enums.Role;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,7 +18,6 @@ public class StudentRDTO {
     private String username;
     @NotBlank(message = "password is required")
     private String password;
-    //private String Role;
     @NotNull(message = "active status is required")
     private boolean isActive;
 }

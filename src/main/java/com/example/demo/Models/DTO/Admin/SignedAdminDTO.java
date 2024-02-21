@@ -15,4 +15,5 @@ public class SignedAdminDTO {
     private long id;
     private String username;
     private String token;
+    private String refresh_token;
 }

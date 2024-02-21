@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.example.demo.Models.Enums.Role;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,6 +18,4 @@ public class AdminRDTO {
     private String username;
     @NotBlank(message = "password is required")
     private String password;
-    // @NotBlank(message = "role is required")
-    // private String Role;
 }

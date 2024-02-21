@@ -2,8 +2,6 @@ package com.example.demo.Configurations.Security;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,10 +25,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
 
     public JwtAuthenticationFilter(
-        //@Qualifier("StudentDetails")
         StudentDetailsImpl studentDetailsImpl,
         JwtService jwtService,
-        //@Qualifier("AdminDetails")
         AdminDetailsImpl adminDetailsImpl
         ){
         this.studentDetailsImpl = studentDetailsImpl;

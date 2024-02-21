@@ -3,6 +3,7 @@ package com.example.demo.Services.impl;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -78,7 +79,7 @@ public class StudentServiceImpl implements StudentService {
             StudentDTO.class
         );
     }
-
+    @PreAuthorize("hasAuthority('STUDENT')")
     @Override
     public void logout(UUID refresh_token) {
         studentRefreshRepository.deleteById(refresh_token);

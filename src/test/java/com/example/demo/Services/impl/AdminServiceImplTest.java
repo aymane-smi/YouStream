@@ -153,11 +153,11 @@ public class AdminServiceImplTest {
     //     assertEquals(tmp.getToken(), signedAdminDTO.getToken());
     // }
 
-    // @Test
-    // @DisplayName("testing logout of admin by giving the token")
-    // void testLogout() {
+    @Test
+    @DisplayName("testing logout of admin by giving the token")
+    void testLogout() {
 
-    // }
+    }
 
     @Test
     @DisplayName("testing signup functionality of admin")

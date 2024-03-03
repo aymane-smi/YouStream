@@ -7,12 +7,16 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import com.example.demo.Models.Entites.Student;
 import com.example.demo.Models.Enums.Role;
 import com.example.demo.Repositories.StudentRepository;
 
-public class StudentDetailsImpl implements UserDetailsService{
+
+
+@Service("StudentDetails")
+public class StudentDetailsImpl implements UserDetailsService {
 
     private final StudentRepository studentRepository;
 
@@ -22,7 +26,7 @@ public class StudentDetailsImpl implements UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Student student = studentRepository.findByUser(username).orElseThrow(()->{
+        Student student = studentRepository.findByUsername(username).orElseThrow(()->{
             throw new UsernameNotFoundException("Student not found");
         });
         return new User(

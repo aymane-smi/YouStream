@@ -30,7 +30,7 @@ public class SecurityConfiguration {
         }).csrf(csrf -> {
             csrf.disable();
         }).authorizeHttpRequests(req -> {
-            req.requestMatchers("/api/auth/**").permitAll();
+            req.requestMatchers("/api/auth/**").permitAll().anyRequest().authenticated();
         }).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .sessionManagement( session -> {
             session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);

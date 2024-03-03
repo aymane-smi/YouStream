@@ -7,16 +7,14 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.example.demo.Models.Entites.Admin;
-import com.example.demo.Models.Entites.Student;
 import com.example.demo.Models.Enums.Role;
 import com.example.demo.Repositories.AdminRepository;
-import com.example.demo.Repositories.StudentRepository;
 
-@Component
-public class AdminDetailsImpl implements UserDetailsService{
+@Service("AdminDetails")
+public class AdminDetailsImpl implements UserDetailsService {
 
     private final AdminRepository adminRepository;
 
@@ -26,7 +24,7 @@ public class AdminDetailsImpl implements UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Admin admin = adminRepository.findByUser(username).orElseThrow(()->{
+        Admin admin = adminRepository.findByUsername(username).orElseThrow(()->{
             throw new UsernameNotFoundException("Admin not found");
         });
         return new User(

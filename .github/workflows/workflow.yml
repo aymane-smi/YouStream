@@ -19,7 +19,6 @@ jobs:
         with:
           java-version: '17'
           distribution: oracle
-          cache: maven
       - name:
         run: mvn tests
 

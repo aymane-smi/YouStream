@@ -20,6 +20,6 @@ jobs:
           java-version: '17'
           distribution: oracle
       - name:
-        run: mvn test
+        run: mvn tests
 
 

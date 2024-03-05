@@ -10,10 +10,6 @@ on:
 
 jobs:
   test:
-    strategy:
-      java-version: '17'
-      cache: 'maven'
-      distribution: 'oracle'
     runs-on: ubuntu-latest
     steps:
       - name: Checking repository
@@ -21,9 +17,9 @@ jobs:
       - name: Install jdk 17
         uses: actions/setups-java@v3
         with:
-          version: java-version
-          distribution: distribution
-          cache: cache
+          version: '17'
+          distribution: 'oracle'
+          cache: 'maven'
       - name:
         run: mvn tests
 

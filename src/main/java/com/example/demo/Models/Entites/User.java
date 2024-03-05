@@ -1,5 +1,6 @@
 package com.example.demo.Models.Entites;
 
+
 import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
 

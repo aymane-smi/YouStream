@@ -1,7 +1,14 @@
 package com.example.demo.Controllers;
 
-import com.example.demo.Services.impl.Validation;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.Models.DTO.Stream.StreamCreateDTO;
+import com.example.demo.Models.DTO.Stream.StreamResponseDTO;
+import com.example.demo.Models.Entites.Student;
+import com.example.demo.Models.Entites.User;
+import com.example.demo.Services.ValidationService;
+
+import jakarta.validation.Valid;
+
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -9,14 +16,21 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/stream")
 public class ValidationController {
-    @Autowired
-    private Validation ValidationService;
-    @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    private final ValidationService ValidationService;
+    public ValidationController(
+        ValidationService validationService
+    ){
+        this.ValidationService = validationService;
+    }
+    @PostMapping
+    public ResponseEntity<StreamResponseDTO> createStream(@Valid @RequestBody StreamCreateDTO streamDTO){
+        return new ResponseEntity<StreamResponseDTO>(ValidationService.createStream(streamDTO), HttpStatus.CREATED);
+    }
+    @PostMapping(path = "/validate", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ResponseEntity<?> validate(@RequestParam MultiValueMap body){
-        //System.out.println("body===>"+body.getFirst("password"));
-        if(ValidationService.validation(body.getFirst("password").toString()))
+        if(ValidationService.validation(body.getFirst("name").toString(), body.getFirst("password").toString()))
             return new ResponseEntity<>(null, HttpStatus.OK);
         return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
     }

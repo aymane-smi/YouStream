@@ -1,6 +1,10 @@
 package com.example.demo.Models.Entites;
 
+import java.util.Collection;
 import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.demo.Models.Enums.Role;
 
@@ -18,14 +22,23 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity(name="Student")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 @Builder
-public class Student extends User {
+public class Student extends User implements UserDetails{
+    @Builder
+    public Student(String firstName, String lastName, String username, String password){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
@@ -40,4 +53,24 @@ public class Student extends User {
     List<StudentRefreshToken> refreshTokens;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

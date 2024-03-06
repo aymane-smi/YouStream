@@ -33,4 +33,7 @@ public class Stream {
     private List<Tag> tags;
     @ManyToOne(fetch = FetchType.LAZY)
     private Student owner;
+    public long getId(){
+        return id;
+    }
 }

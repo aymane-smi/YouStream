@@ -1,10 +1,13 @@
 package com.example.demo.Models.Entites;
 
+
 import jakarta.persistence.MappedSuperclass;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @MappedSuperclass
-@Data
+@Getter
+@Setter
 public abstract class User {
     protected String username;
     protected String firstName;

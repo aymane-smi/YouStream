@@ -4,6 +4,7 @@ package com.example.demo.Models.DTO.Stream;
 import java.util.List;
 
 import com.example.demo.Models.DTO.Student.StudentDTO;
+import com.example.demo.Models.DTO.Tag.TagDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +22,6 @@ public class StreamDTO {
     private int viewsNbr;
     private boolean restricted;
     private String file_name;
-    private List<Object> tags;
+    private List<TagDTO> tags;
     private StudentDTO student;
 }

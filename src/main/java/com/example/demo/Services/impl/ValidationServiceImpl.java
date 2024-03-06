@@ -66,6 +66,7 @@ public class ValidationServiceImpl implements ValidationService{
     public boolean validation(String key, String password) {
         Base64 base64 = new Base64();
         String[] decodedKey = new String(base64.decode(key.getBytes())).split("-");
+        System.out.println(key);
         var student = studentRepository.findByUsername(decodedKey[0]).get();
         if(passwordEncoder.matches(password, student.getPassword())){
             var stream = streamRepository.findById(Long.parseLong(decodedKey[2])).get();

@@ -32,6 +32,13 @@ import lombok.ToString;
 @ToString
 @Builder
 public class Student extends User implements UserDetails{
+    @Builder
+    public Student(String firstName, String lastName, String username, String password){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;

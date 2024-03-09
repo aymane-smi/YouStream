@@ -24,7 +24,7 @@ import lombok.Setter;
 @Builder
 public class Stream {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private int viewsNbr;
     private boolean restricted;

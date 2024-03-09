@@ -90,14 +90,4 @@ public class ValidationServiceImpl implements ValidationService{
                 );
         return resultTags;
     }
-
-    // private String Security.retriveUsername(){
-    //     Authentication auth = authentication.getAuthentication();
-    //     if(authentication != null && auth.isAuthenticated()){
-    //         UserDetails userDetails = (UserDetails) auth.getPrincipal();
-    //         return userDetails.getUsername();
-    //     }
-    //     return null;
-    // }
-    
 }

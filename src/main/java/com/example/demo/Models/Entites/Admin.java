@@ -31,7 +31,7 @@ import lombok.Setter;
 @Builder
 public class Admin extends User implements UserDetails{
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true)
     List<AdminRefreshToken> refreshTokens;

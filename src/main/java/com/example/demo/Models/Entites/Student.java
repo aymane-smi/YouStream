@@ -40,7 +40,7 @@ public class Student extends User implements UserDetails{
         this.password = password;
     }
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private boolean isActive;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -51,6 +51,14 @@ public class Student extends User implements UserDetails{
     List<Stream> streams;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     List<StudentRefreshToken> refreshTokens;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Notification> studentNotifications;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "streamer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Notification> streamerNotifications;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "subscriber", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Subscriber> subscribers;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "streamer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Subscriber> followings;
     @Enumerated(EnumType.STRING)
     private Role role;
     @Override

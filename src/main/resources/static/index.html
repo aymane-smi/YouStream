@@ -1,122 +1,122 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-bs-theme="dark">
 <head>
-    <title>Hello WebSocket</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link href="/main.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+    <meta charset="UTF-8"/>
+    <title>Websocket Test</title>
+
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+    />
+
+    <!-- JS -->
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"
+            integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    ></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"
+            integrity="sha512-1QvjE7BtotQjkq8PxLeF6P46gEpBRXuskzIVgjFpekzFVF4yjRgrQvTG1MTOJ3yQgvTteKAcO7DSZI92+u/yZw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    ></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    ></script>
 </head>
+
 <body>
-<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
-    enabled. Please enable
-    Javascript and reload this page!</h2></noscript>
-<div id="main-content" class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <form class="form-inline">
-                <div class="form-group">
-                    <label for="connect">WebSocket connection:</label>
-                    <button id="connect" class="btn btn-default" type="submit">Connect</button>
-                    <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect
-                    </button>
-                </div>
-            </form>
+<div class="container">
+    <div class="row mt-4 border-bottom border-3">
+        <div class="col-6">
+            <h1>Websocket Test</h1>
         </div>
-        <div class="col-md-6">
-            <form class="form-inline">
-                <div class="form-group">
-                    <label for="name">What is your name?</label>
-                    <input type="text" id="name" class="form-control" placeholder="Your name here...">
-                </div>
-                <button id="send" class="btn btn-default" type="submit">Send</button>
-            </form>
+asadasd
+        <div id="connect-div" class="col-6 d-flex justify-content-end">
+            <div>
+                <button class="btn btn-sm btn-success py-2 px-4" id="connect">
+                    CONNECT
+                </button>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <table id="conversation" class="table table-striped">
+
+
+    <div class="row mt-3">
+        <div class="col-12">
+            <h4>Send Message</h4>
+        </div>
+        <form id="send-form" class="col-12 d-flex align-items-end gap-3">
+            <div class="w-100">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-control" name="login-username" id="username" required/>
+            </div>
+            <div class="w-100">
+                <label class="form-label">Message</label>
+                <input type="text" class="form-control" name="message" id="message" required/>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-warning" id="send" disabled>SEND</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12">
+            <h4>Messages</h4>
+        </div>
+
+        <div class="col-12">
+            <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>Greetings</th>
+                    <th>Message</th>
+                    <th>From</th>
                 </tr>
                 </thead>
-                <tbody id="greetings">
+                <tbody id="tbody">
+
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-</body>
+
+
 <script>
-
-    const stompClient = new StompJs.Client({
-        brokerURL: 'ws://localhost:8080/ws'
-    });
-
-    stompClient.onConnect = (frame) => {
-        setConnected(true);
-        console.log('Connected: ' + frame);
-        stompClient.subscribe('/student/1', (greeting) => {
-            console.log(greeting);
-            showGreeting(JSON.parse(greeting.body).message);
-        });
-    };
-
-    stompClient.onWebSocketError = (error) => {
-        console.error('Error with websocket', error);
-    };
-
-    stompClient.onStompError = (frame) => {
-        console.error('Broker reported error: ' + frame.headers['message']);
-        console.error('Additional details: ' + frame.body);
-    };
+    function getItem(key) {
+        return localStorage.getItem(key);
+    }
 
     function setConnected(connected) {
-        $("#connect").prop("disabled", connected);
-        $("#disconnect").prop("disabled", !connected);
-        if (connected) {
-            $("#conversation").show();
-        }
-        else {
-            $("#conversation").hide();
-        }
-        $("#greetings").html("");
+        $("#connect").text("Connected").attr("disabled", true);
+        $("#send").attr("disabled", false);
     }
 
-    function connect() {
-        stompClient.activate();
-    }
+    let stompClient = null;
+    $("#connect").click(() => {
+        const socket = new SockJS("http://localhost:8080/ws");
+        stompClient = Stomp.over(socket);
+        stompClient.connect({Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHVkZW50MSIsImlhdCI6MTcxMDA2MzM5Niwicm9sZSI6W3siYXV0aG9yaXR5IjoiQURNSU4ifV0sImV4cCI6MTcxMDA5OTM5Nn0.zxRgpARoEDGaCLZCH51fVjFrWZPimPbIAZyJISqIEMY`}, (frame) => {
+            console.log(frame);
+            setConnected()
 
-    function disconnect() {
-        stompClient.deactivate();
-        setConnected(false);
-        console.log("Disconnected");
-    }
+            stompClient.subscribe("/2/topic", (message) => {
+                const data = JSON.parse(message.body);
+                console.log(data);
 
-    function sendName() {
-        const dto = {
-            student_id: 1,
-            trainer_id: 1,
-            message: document.querySelector("#name").textContent,
-            sender: "STUDENT",
-            messageTime: new Date()
-        }
-        stompClient.publish({
-            destination: "/notification/chat",
-            body: JSON.stringify(dto)
+                $("#tbody").append(`<tr><td>${data.message}</td><td>${data.from}</td></tr>`)
+
+            });
         });
-    }
-
-    function showGreeting(message) {
-        $("#greetings").append("<tr><td>" + message + "</td></tr>");
-    }
-
-    $(function () {
-        $("form").on('submit', (e) => e.preventDefault());
-        $( "#connect" ).click(() => connect());
-        $( "#disconnect" ).click(() => disconnect());
-        $( "#send" ).click(() => sendName());
     });
 </script>
+</body>
 </html>

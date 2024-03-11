@@ -2,8 +2,6 @@ package com.example.demo.Controllers;
 
 import com.example.demo.Models.DTO.Stream.StreamCreateDTO;
 import com.example.demo.Models.DTO.Stream.StreamResponseDTO;
-import com.example.demo.Models.Entites.Student;
-import com.example.demo.Models.Entites.User;
 import com.example.demo.Services.ValidationService;
 
 import jakarta.validation.Valid;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/stream")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ValidationController {
     private final ValidationService ValidationService;
     public ValidationController(

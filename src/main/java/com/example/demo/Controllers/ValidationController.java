@@ -6,7 +6,7 @@ import com.example.demo.Services.ValidationService;
 
 import jakarta.validation.Valid;
 
-
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +24,10 @@ public class ValidationController {
         this.ValidationService = validationService;
     }
     @PostMapping
+    @Cacheable(value = "stream", key="#stream.id")
     public ResponseEntity<StreamResponseDTO> createStream(@Valid @RequestBody StreamCreateDTO streamDTO){
-        return new ResponseEntity<StreamResponseDTO>(ValidationService.createStream(streamDTO), HttpStatus.CREATED);
+        var stream = ValidationService.createStream(streamDTO);
+        return new ResponseEntity<StreamResponseDTO>(stream, HttpStatus.CREATED);
     }
     @PostMapping(path = "/validate", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ResponseEntity<?> validate(@RequestParam MultiValueMap body){

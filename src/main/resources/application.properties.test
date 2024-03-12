@@ -1,0 +1,21 @@
+#DB configuration
+spring.datasource.username=
+spring.datasource.password=
+#spring.datasource.url=
+spring.datasource.url=
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.show-sql=true
+#Jwt configuration
+jwt.secret=
+jwt.ExpirationTime=
+#acutator
+management.endpoints.web.exposure.include=*
+#Logging
+logging.file.name=./demo/logs/YouStream.log
+# Cache configuration
+spring.cache.type=redis
+spring.cache.host=
+spring.cache.port=
+spring.cache.redis.time-to-live=60000

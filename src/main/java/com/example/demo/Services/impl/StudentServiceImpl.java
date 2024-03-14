@@ -1,5 +1,7 @@
 package com.example.demo.Services.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.Configurations.Security.JwtService;
 import com.example.demo.Models.DTO.Student.SignedStudentDTO;
 import com.example.demo.Models.DTO.Student.StudentDTO;
+import com.example.demo.Models.DTO.Student.StudentListDTO;
 import com.example.demo.Models.DTO.Student.StudentLoginDTO;
 import com.example.demo.Models.DTO.Student.StudentRDTO;
 import com.example.demo.Models.Entites.Student;
@@ -102,6 +105,18 @@ public class StudentServiceImpl implements StudentService {
             .token(token)
             .refresh_token(newRefresh.getId().toString())
             .build();
+    }
+
+    @Override
+    public List<StudentListDTO> getListStudent() {
+        List<Student> students = studentRepository.findAll();
+        List<StudentListDTO> list = new ArrayList<>();
+        students.forEach(student ->{
+            var tmp = modelMapper.map(student, StudentListDTO.class);
+            tmp.setFollowersNbr(student.getSubscribers().size());
+            list.add(tmp);
+        });
+       return list;
     }
     
 }

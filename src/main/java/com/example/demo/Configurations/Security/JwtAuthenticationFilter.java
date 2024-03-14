@@ -54,33 +54,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UserDetails userDetailsVar = null;
             if(userType.equals("student"))
                 userDetailsVar = studentDetailsImpl.loadUserByUsername(username);
-            else if(userType.equals("student"))
+            else if(userType.equals("admin"))
                 userDetailsVar = adminDetailsImpl.loadUserByUsername(username);
             if(userDetailsVar == null)
                 throw new ServletException("userDetails is null");
             if (jwtService.validateToken(token, userDetailsVar)) {
                 UsernamePasswordAuthenticationToken authenticationToken = null;
-                if(userType.equals("admin")){
-                    log.info("inside admin in filter");
-                    authenticationToken = new UsernamePasswordAuthenticationToken(
+                authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetailsVar, null, userDetailsVar.getAuthorities()
                     );
-                }
-                else if(userType.equals("student")){
-                    log.info("inside student in filter");
-                    authenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetailsVar, null, userDetailsVar.getAuthorities()
-                    );
-                }
                 authenticationToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)
                 );
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-                UserDetails stu = (UserDetails) auth.getPrincipal();
-
-                log.info("final result:"+stu.getUsername());
-                
             }
         }
         filterChain.doFilter(request, response);

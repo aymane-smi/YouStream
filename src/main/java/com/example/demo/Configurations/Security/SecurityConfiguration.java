@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
-    private final static String[] ALLOWED_URLS = {"/api/auth/**", "/api/stream/validate", "/ws/**", "/actuator/**", "/api/student", "/api/streamtest"};
+    private final static String[] ALLOWED_URLS = {"/api/auth/**", "/api/stream/validate", "/ws/**", "/actuator/**", "/api/student", "/api/stream/features/**"};
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     public SecurityConfiguration(

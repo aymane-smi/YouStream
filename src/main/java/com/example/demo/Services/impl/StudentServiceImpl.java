@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -108,6 +109,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Cacheable(value = "students")
     public List<StudentListDTO> getListStudent() {
         List<Student> students = studentRepository.findAll();
         List<StudentListDTO> list = new ArrayList<>();

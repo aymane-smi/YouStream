@@ -10,19 +10,25 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.Models.DTO.Stream.StreamTopDTO;
 import com.example.demo.Repositories.StreamRepository;
+import com.example.demo.Repositories.TagRepository;
 import com.example.demo.Services.StreamService;
+
+import io.jsonwebtoken.lang.Arrays;
 
 @Service
 public class StreamServiceImpl implements StreamService{
     private final StreamRepository streamRepository;
     private final ModelMapper modelMapper;
+    private final TagRepository tagRepository;
 
     public StreamServiceImpl(
         ModelMapper modelMapper,
-        StreamRepository streamRepository
+        StreamRepository streamRepository,
+        TagRepository tagRepository
     ){
         this.modelMapper = modelMapper;
         this.streamRepository = streamRepository;
+        this.tagRepository = tagRepository;
     }
 
     @Override
@@ -53,5 +59,10 @@ public class StreamServiceImpl implements StreamService{
                             return tmp;
                            })
                            .toList();
+    }
+
+    @Override
+    public List<StreamTopDTO> getStreamsByTag(String tag) {
+        return Arrays.asList(modelMapper.map(tagRepository.getStreamsByTag(tag), StreamTopDTO[].class));
     }
 }

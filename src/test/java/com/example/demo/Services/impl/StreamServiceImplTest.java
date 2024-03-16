@@ -25,7 +25,10 @@ import org.springframework.data.domain.PageRequest;
 import com.example.demo.Models.DTO.Stream.StreamTopDTO;
 import com.example.demo.Models.Entites.Stream;
 import com.example.demo.Repositories.StreamRepository;
+import com.example.demo.Repositories.TagRepository;
 import com.example.demo.Services.StreamService;
+
+import io.jsonwebtoken.lang.Arrays;
 
 @RunWith(MockitoJUnitRunner.class)
 @ExtendWith(MockitoExtension.class)
@@ -36,12 +39,14 @@ public class StreamServiceImplTest {
     private StreamRepository streamRepository;
     @Mock
     private ModelMapper modelMapper;
+    @Mock
+    private TagRepository tagRepository;
     @MockBean
     private StreamService streamService;
 
     @BeforeEach
     public void init(){
-        streamService = new StreamServiceImpl(modelMapper, streamRepository);
+        streamService = new StreamServiceImpl(modelMapper, streamRepository, tagRepository);
     }
 
     @Test
@@ -62,5 +67,14 @@ public class StreamServiceImplTest {
         Page<Stream> result = new PageImpl<>(list);
         when(streamRepository.findByRestrictedIs(true, page)).thenReturn(result);
         assertEquals(streamService.getAllStream(0).size(), 0);
+    }
+    @Test
+    @DisplayName("get streams by tag")
+    void testGetStreamsByTag(){
+        List<Stream> list1 = new ArrayList<>();
+        StreamTopDTO[] list2 = {};
+        when(tagRepository.getStreamsByTag("sport")).thenReturn(list1);
+        when(modelMapper.map(list1, StreamTopDTO[].class)).thenReturn(list2);
+        assertEquals(streamService.getStreamsByTag("sport").size(), 0);
     }
 }

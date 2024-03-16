@@ -27,7 +27,7 @@ public class ValidationController {
     @Cacheable(value = "stream", key="#stream.id")
     public ResponseEntity<StreamResponseDTO> createStream(@Valid @RequestBody StreamCreateDTO streamDTO){
         var stream = ValidationService.createStream(streamDTO);
-        return new ResponseEntity<StreamResponseDTO>(stream, HttpStatus.CREATED);
+        return new ResponseEntity<>(stream, HttpStatus.CREATED);
     }
     @PostMapping(path = "/validate", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ResponseEntity<?> validate(@RequestParam MultiValueMap body){

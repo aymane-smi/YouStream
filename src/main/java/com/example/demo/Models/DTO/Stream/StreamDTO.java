@@ -24,4 +24,5 @@ public class StreamDTO {
     private String file_name;
     private List<TagDTO> tags;
     private StudentDTO student;
+    private StudentDTO owner;
 }

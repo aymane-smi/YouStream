@@ -53,6 +53,7 @@ public class ValidationServiceImpl implements ValidationService{
                                         .owner(
                                             studentRepository.findByUsername(Security.retriveUsername()).get()
                                         ).build();
+        tmpStream.setTags(tags);
         var stream = streamRepository.save(tmpStream);
         String token = Security.retriveUsername()+"-"+System.currentTimeMillis()+"-"+stream.getId();
         return StreamResponseDTO.builder().stream(

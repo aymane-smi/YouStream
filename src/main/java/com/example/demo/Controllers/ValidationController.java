@@ -24,7 +24,6 @@ public class ValidationController {
         this.ValidationService = validationService;
     }
     @PostMapping
-    @Cacheable(value = "stream", key="#stream.id")
     public ResponseEntity<StreamResponseDTO> createStream(@Valid @RequestBody StreamCreateDTO streamDTO){
         var stream = ValidationService.createStream(streamDTO);
         return new ResponseEntity<>(stream, HttpStatus.CREATED);

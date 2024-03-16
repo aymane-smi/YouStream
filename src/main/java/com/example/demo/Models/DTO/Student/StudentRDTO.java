@@ -16,6 +16,10 @@ import lombok.Setter;
 public class StudentRDTO {
     @NotBlank(message = "username is required")
     private String username;
+    @NotBlank(message = "first name is required")
+    private String firstName;
+    @NotBlank(message = "last name is required")
+    private String lastName;
     @NotBlank(message = "password is required")
     private String password;
     @NotNull(message = "active status is required")

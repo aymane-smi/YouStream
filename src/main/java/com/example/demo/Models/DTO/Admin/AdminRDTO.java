@@ -18,4 +18,8 @@ public class AdminRDTO {
     private String username;
     @NotBlank(message = "password is required")
     private String password;
+    @NotBlank(message = "first name is required")
+    private String firstName;
+    @NotBlank(message = "last name is required")
+    private String lastName;
 }

@@ -30,8 +30,6 @@ import com.example.demo.Repositories.StreamRepository;
 import com.example.demo.Repositories.TagRepository;
 import com.example.demo.Services.StreamService;
 
-import io.jsonwebtoken.lang.Arrays;
-
 @RunWith(MockitoJUnitRunner.class)
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)

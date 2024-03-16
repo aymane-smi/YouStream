@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
+import com.example.demo.Models.DTO.Stream.StreamDTO;
 import com.example.demo.Models.DTO.Stream.StreamTopDTO;
 import com.example.demo.Models.Entites.Stream;
 import com.example.demo.Repositories.StreamRepository;
@@ -43,10 +45,18 @@ public class StreamServiceImplTest {
     private TagRepository tagRepository;
     @MockBean
     private StreamService streamService;
+    private Stream stream;
+    private StreamDTO streamDTO;
 
     @BeforeEach
     public void init(){
         streamService = new StreamServiceImpl(modelMapper, streamRepository, tagRepository);
+        stream = Stream.builder().id(1)
+                                 .file_name("test")
+                                 .build();
+        streamDTO = StreamDTO.builder().id(1)
+                                 .file_name("test")
+                                 .build();
     }
 
     @Test
@@ -76,5 +86,13 @@ public class StreamServiceImplTest {
         when(tagRepository.getStreamsByTag("sport")).thenReturn(list1);
         when(modelMapper.map(list1, StreamTopDTO[].class)).thenReturn(list2);
         assertEquals(streamService.getStreamsByTag("sport").size(), 0);
+    }
+
+    @Test
+    @DisplayName("get stream by id")
+    void testGetStreamById(){
+        when(streamRepository.findById(1L)).thenReturn(Optional.of(stream));
+        when(modelMapper.map(stream, StreamDTO.class)).thenReturn(streamDTO);
+        assertEquals(streamService.getStreamById(1).getId(), stream.getId());
     }
 }

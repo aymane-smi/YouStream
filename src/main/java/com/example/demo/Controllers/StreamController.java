@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.Models.DTO.Stream.StreamDTO;
 import com.example.demo.Models.DTO.Stream.StreamTopDTO;
 import com.example.demo.Services.StreamService;
 
@@ -39,6 +40,10 @@ public class StreamController {
     @GetMapping("/tag/{tagName}")
     public ResponseEntity<List<StreamTopDTO>> getStreamsByTag(@PathVariable("tagName") String tageName) {
         return new ResponseEntity<>(streamService.getStreamsByTag(tageName), HttpStatus.OK);
+    }
+    @GetMapping("/find/{id}")
+    public ResponseEntity<StreamDTO> getStreamById(@PathVariable("id") int id) {
+        return new ResponseEntity<>(streamService.getStreamById(id), HttpStatus.OK);
     }
     
 }

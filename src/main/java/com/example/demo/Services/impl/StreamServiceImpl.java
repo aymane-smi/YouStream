@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.Models.DTO.Stream.StreamDTO;
 import com.example.demo.Models.DTO.Stream.StreamTopDTO;
 import com.example.demo.Repositories.StreamRepository;
 import com.example.demo.Repositories.TagRepository;
@@ -64,5 +65,10 @@ public class StreamServiceImpl implements StreamService{
     @Override
     public List<StreamTopDTO> getStreamsByTag(String tag) {
         return Arrays.asList(modelMapper.map(tagRepository.getStreamsByTag(tag), StreamTopDTO[].class));
+    }
+
+    @Override
+    public StreamDTO getStreamById(int id){
+        return modelMapper.map(streamRepository.findById((long)id).get(), StreamDTO.class);
     }
 }

@@ -12,4 +12,6 @@ public interface AdminService {
     public void logout(UUID refresh_token);
     public AdminDTO signup(AdminRDTO student);
     public SignedAdminDTO createRefreshToken(UUID refresh_token);
+    public String editUsername(String username);
+    public boolean editPassword(String password);
 }

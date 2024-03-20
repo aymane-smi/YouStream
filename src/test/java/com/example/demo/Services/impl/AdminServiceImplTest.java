@@ -2,6 +2,7 @@ package com.example.demo.Services.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.Collections;
@@ -20,9 +21,12 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Description;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.example.demo.Configurations.Security.JwtService;
 import com.example.demo.Models.DTO.Admin.AdminDTO;
@@ -39,6 +43,7 @@ import com.example.demo.Repositories.AdminRepository;
 @RunWith(MockitoJUnitRunner.class)
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
+@ExtendWith(SpringExtension.class)
 public class AdminServiceImplTest {
     @Mock
     private AdminRepository adminRepository;
@@ -162,5 +167,24 @@ public class AdminServiceImplTest {
         when(modelMapper.map(adminRDto, Admin.class)).thenReturn(admin);
         when(modelMapper.map(admin, AdminDTO.class)).thenReturn(adminDTO);
         assertSame( adminDTO, adminServiceImpl.signup(adminRDto));
+    }
+
+    @Test
+    @Description("mocking edit username for student")
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    void testEditUsername(){
+        when(adminRepository.findByUsername("admin")).thenReturn(Optional.of(admin));
+        when(adminRepository.save(any())).thenReturn(admin);
+        assertEquals(adminServiceImpl.editUsername("admin"), "admin");
+    }
+
+    @Test
+    @Description("mocking edit username for student")
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    void testEditPassword(){
+        when(adminRepository.findByUsername("admin")).thenReturn(Optional.of(admin));
+        when(passwordEncoder.encode("admin")).thenReturn("admin");
+        when(adminRepository.save(any())).thenReturn(admin);
+        assertEquals(adminServiceImpl.editPassword("student"), true);
     }
 }

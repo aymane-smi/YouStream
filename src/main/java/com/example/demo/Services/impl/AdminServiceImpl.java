@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Configurations.Security.JwtService;
+import com.example.demo.Helper.Security;
 import com.example.demo.Models.DTO.Admin.AdminDTO;
 import com.example.demo.Models.DTO.Admin.AdminLoginDTO;
 import com.example.demo.Models.DTO.Admin.AdminRDTO;
@@ -101,6 +102,30 @@ public class AdminServiceImpl implements AdminService{
             .token(token)
             .refresh_token(newRefresh.getId().toString())
             .build();
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @Override
+    public String editUsername(String username) {
+        var user = adminRepository.findByUsername(Security.retriveUsername()).get();
+        user.setUsername(username);
+        adminRepository.save(user);
+        return username;
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @Override
+    public boolean editPassword(String password) {
+        try{
+            var user = adminRepository.findByUsername(Security.retriveUsername()).get();
+            user.setPassword(
+                passwordEncoder.encode(password)
+            );
+            adminRepository.save(user);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
     }
     
 }

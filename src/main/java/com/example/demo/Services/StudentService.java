@@ -15,4 +15,6 @@ public interface StudentService {
     public SignedStudentDTO createRefreshToken(UUID refresh_token);
     public StudentDTO signup(StudentRDTO student);
     public List<StudentListDTO> getListStudent();
+    public String editUsername(String username);
+    public boolean editPassword(String password);
 }

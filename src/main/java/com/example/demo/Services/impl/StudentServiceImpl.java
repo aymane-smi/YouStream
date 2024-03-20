@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Configurations.Security.JwtService;
+import com.example.demo.Helper.Security;
 import com.example.demo.Models.DTO.Student.SignedStudentDTO;
 import com.example.demo.Models.DTO.Student.StudentDTO;
 import com.example.demo.Models.DTO.Student.StudentListDTO;
@@ -119,6 +120,30 @@ public class StudentServiceImpl implements StudentService {
             list.add(tmp);
         });
        return list;
+    }
+    
+    @PreAuthorize("hasAuthority('STUDENT')")
+    @Override
+    public String editUsername(String username) {
+        var user = studentRepository.findByUsername(Security.retriveUsername()).get();
+        user.setUsername(username);
+        studentRepository.save(user);
+        return username;
+    }
+
+    @PreAuthorize("hasAuthority('STUDENT')")
+    @Override
+    public boolean editPassword(String password) {
+        try{
+            var user = studentRepository.findByUsername(Security.retriveUsername()).get();
+            user.setPassword(
+                passwordEncoder.encode(password)
+            );
+            studentRepository.save(user);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
     }
     
 }

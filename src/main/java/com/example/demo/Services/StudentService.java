@@ -8,6 +8,7 @@ import com.example.demo.Models.DTO.Student.StudentDTO;
 import com.example.demo.Models.DTO.Student.StudentListDTO;
 import com.example.demo.Models.DTO.Student.StudentLoginDTO;
 import com.example.demo.Models.DTO.Student.StudentRDTO;
+import com.example.demo.Models.DTO.Subscriber.SubscriberDTO;
 
 public interface StudentService {
     public SignedStudentDTO login(StudentLoginDTO student);
@@ -17,4 +18,5 @@ public interface StudentService {
     public List<StudentListDTO> getListStudent();
     public String editUsername(String username);
     public boolean editPassword(String password);
+    public SubscriberDTO subscribe(long streamerId);
 }

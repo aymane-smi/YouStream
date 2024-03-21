@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.Models.DTO.Student.StudentEditPwdDTO;
 import com.example.demo.Models.DTO.Student.StudentEditUserDTO;
 import com.example.demo.Models.DTO.Student.StudentListDTO;
+import com.example.demo.Models.DTO.Subscriber.SubscriberDTO;
+import com.example.demo.Models.DTO.Subscriber.SubscriberRDTO;
 import com.example.demo.Services.StudentService;
 
 import jakarta.validation.Valid;
@@ -51,6 +53,10 @@ public class StudentController {
         Map<String, Boolean> map = new HashMap<>();
         map.put("changed", studentService.editPassword(password.getPassword()));
         return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
+    }
+    @PostMapping("/subscribe")
+    public ResponseEntity<SubscriberDTO> subscribe(@Valid @RequestBody SubscriberRDTO subscribeDTO){
+        return new ResponseEntity<>(studentService.subscribe(subscribeDTO.getStreamerId()), HttpStatus.OK);
     }
     
 }

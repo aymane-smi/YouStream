@@ -12,17 +12,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Configurations.Security.JwtService;
+import com.example.demo.Exceptions.NotAuthorizedException;
 import com.example.demo.Helper.Security;
 import com.example.demo.Models.DTO.Student.SignedStudentDTO;
 import com.example.demo.Models.DTO.Student.StudentDTO;
 import com.example.demo.Models.DTO.Student.StudentListDTO;
 import com.example.demo.Models.DTO.Student.StudentLoginDTO;
 import com.example.demo.Models.DTO.Student.StudentRDTO;
+import com.example.demo.Models.DTO.Subscriber.SubscriberDTO;
 import com.example.demo.Models.Entites.Student;
 import com.example.demo.Models.Entites.StudentRefreshToken;
+import com.example.demo.Models.Entites.Subscriber;
 import com.example.demo.Models.Enums.Role;
 import com.example.demo.Repositories.StudentRefreshRepository;
 import com.example.demo.Repositories.StudentRepository;
+import com.example.demo.Repositories.SubscriberRepository;
 import com.example.demo.Services.StudentService;
 
 @Service
@@ -34,6 +38,7 @@ public class StudentServiceImpl implements StudentService {
     private final JwtService jwtService;
     private final ModelMapper modelMapper;
     private final StudentRefreshRepository studentRefreshRepository;
+    private final SubscriberRepository subscriberRepository;
 
     public StudentServiceImpl(
         PasswordEncoder passwordEncoder,
@@ -41,7 +46,8 @@ public class StudentServiceImpl implements StudentService {
         StudentDetailsImpl studentDetailsImpl,
         JwtService jwtService,
         ModelMapper modelMapper,
-        StudentRefreshRepository studentRefreshRepository
+        StudentRefreshRepository studentRefreshRepository,
+        SubscriberRepository subscriberRepository
     ){
         this.passwordEncoder = passwordEncoder;
         this.studentDetailsImpl = studentDetailsImpl;
@@ -49,6 +55,7 @@ public class StudentServiceImpl implements StudentService {
         this.jwtService = jwtService;
         this.modelMapper = modelMapper;
         this.studentRefreshRepository = studentRefreshRepository;
+        this.subscriberRepository = subscriberRepository;
     }
 
     @Override
@@ -144,6 +151,23 @@ public class StudentServiceImpl implements StudentService {
         }catch(Exception e){
             return false;
         }
+    }
+    @PreAuthorize("hasAuthority('STUDENT')")
+    @Override
+    public SubscriberDTO subscribe(long streamerId) {
+        var user = studentRepository.findByUsername(Security.retriveUsername()).get();
+        if(user.getId() == streamerId)
+            throw new NotAuthorizedException("streamer can't subscriber to him self");
+        Subscriber sub = Subscriber.builder()
+                                   .streamer(
+                                    studentRepository.findById(streamerId).get()
+                                   )
+                                   .subscriber(user)
+                                   .build();
+        var subscriberDTO = modelMapper.map(subscriberRepository.save(sub), SubscriberDTO.class);
+        subscriberDTO.setStreamerId(streamerId);
+        subscriberDTO.setSubscriberId(user.getId());
+        return subscriberDTO;
     }
     
 }

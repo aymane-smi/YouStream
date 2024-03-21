@@ -2,6 +2,7 @@ package com.example.demo.Services.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -25,9 +26,11 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.example.demo.Models.DTO.Student.StudentListDTO;
+import com.example.demo.Models.DTO.Subscriber.SubscriberDTO;
 import com.example.demo.Models.Entites.Student;
 import com.example.demo.Models.Entites.Subscriber;
 import com.example.demo.Repositories.StudentRepository;
+import com.example.demo.Repositories.SubscriberRepository;
 import com.example.demo.Services.StudentService;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -41,14 +44,17 @@ public class StudentServiceImplTest {
     private ModelMapper modelMapper;
     @Mock
     private PasswordEncoder passwordEncoder;
+    @Mock
+    private SubscriberRepository subscriberRepository;
     @MockBean
     private StudentService studentService;
     private Student student;
     private StudentListDTO studentList;
+    private SubscriberDTO subscriberDTO;
 
     @BeforeEach
     public void init(){
-        studentService = new StudentServiceImpl(passwordEncoder, studentRepository, null, null, modelMapper, null);
+        studentService = new StudentServiceImpl(passwordEncoder, studentRepository, null, null, modelMapper, null, subscriberRepository);
         List<Subscriber> fakeList = new ArrayList<>();
         student = Student.builder().id(1)
                                    .username("student")
@@ -63,6 +69,10 @@ public class StudentServiceImplTest {
                                               .username("student")
                                               .followersNbr(1)
                                               .build();
+        subscriberDTO = SubscriberDTO.builder().id(1)
+                                               .streamerId(2)
+                                               .subscriberId(1)
+                                               .build();
     }
     @Test
     @Description("get all student with all there info + nbr of subscribers")
@@ -94,6 +104,18 @@ public class StudentServiceImplTest {
         when(passwordEncoder.encode("student")).thenReturn("student");
         when(studentRepository.save(any())).thenReturn(student);
         assertEquals(studentService.editPassword("student"), true);
+    }
+
+    @Test
+    @Description("mocking subscribing action")
+    @WithMockUser(username = "student", authorities = {"STUDENT"})
+    void testSubscribe(){
+        Subscriber subscriber = Subscriber.builder().id(1).build();
+        when(studentRepository.findByUsername("student")).thenReturn(Optional.of(student));
+        when(studentRepository.findById(anyLong())).thenReturn(Optional.of(student));
+        when(subscriberRepository.save(any())).thenReturn(subscriber);
+        when(modelMapper.map(subscriber, SubscriberDTO.class)).thenReturn(subscriberDTO);
+        assertEquals(studentService.subscribe(2).getStreamerId(), 2);
     }
 
 }

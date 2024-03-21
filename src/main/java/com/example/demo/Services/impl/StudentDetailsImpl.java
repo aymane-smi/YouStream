@@ -32,7 +32,7 @@ public class StudentDetailsImpl implements UserDetailsService {
         return new User(
             student.getUsername(),
             student.getPassword(),
-            Collections.singletonList(new SimpleGrantedAuthority(Role.ADMIN.name()))
+            Collections.singletonList(new SimpleGrantedAuthority(Role.STUDENT.name()))
         );
     }
     

@@ -1,12 +1,14 @@
 package com.example.demo.Services.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,35 +21,47 @@ import org.mockito.quality.Strictness;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Description;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.example.demo.Models.DTO.Student.StudentListDTO;
+import com.example.demo.Models.DTO.Subscriber.SubscriberDTO;
 import com.example.demo.Models.Entites.Student;
 import com.example.demo.Models.Entites.Subscriber;
 import com.example.demo.Repositories.StudentRepository;
+import com.example.demo.Repositories.SubscriberRepository;
 import com.example.demo.Services.StudentService;
 
 @RunWith(MockitoJUnitRunner.class)
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
+@ExtendWith(SpringExtension.class)
 public class StudentServiceImplTest {
     @Mock
     private StudentRepository studentRepository;
     @Mock
     private ModelMapper modelMapper;
+    @Mock
+    private PasswordEncoder passwordEncoder;
+    @Mock
+    private SubscriberRepository subscriberRepository;
     @MockBean
     private StudentService studentService;
     private Student student;
     private StudentListDTO studentList;
+    private SubscriberDTO subscriberDTO;
 
     @BeforeEach
     public void init(){
-        studentService = new StudentServiceImpl(null, studentRepository, null, null, modelMapper, null);
+        studentService = new StudentServiceImpl(passwordEncoder, studentRepository, null, null, modelMapper, null, subscriberRepository);
         List<Subscriber> fakeList = new ArrayList<>();
         student = Student.builder().id(1)
                                    .username("student")
                                    .firstName("fn")
                                    .lastName("ln")
                                    .subscribers(fakeList)
+                                   .password("student")
                                    .build();
         studentList = StudentListDTO.builder().id(1)
                                               .firstName("fn")
@@ -55,6 +69,10 @@ public class StudentServiceImplTest {
                                               .username("student")
                                               .followersNbr(1)
                                               .build();
+        subscriberDTO = SubscriberDTO.builder().id(1)
+                                               .streamerId(2)
+                                               .subscriberId(1)
+                                               .build();
     }
     @Test
     @Description("get all student with all there info + nbr of subscribers")
@@ -68,4 +86,36 @@ public class StudentServiceImplTest {
         var result = studentService.getListStudent();
         assertEquals(result.size(), 1);
     }
+
+    @Test
+    @Description("mocking edit username for student")
+    @WithMockUser(username = "student", authorities = {"STUDENT"})
+    void testEditUsername(){
+        when(studentRepository.findByUsername("student")).thenReturn(Optional.of(student));
+        when(studentRepository.save(any())).thenReturn(student);
+        assertEquals(studentService.editUsername("student"), "student");
+    }
+
+    @Test
+    @Description("mocking edit username for student")
+    @WithMockUser(username = "student", authorities = {"STUDENT"})
+    void testEditPassword(){
+        when(studentRepository.findByUsername("student")).thenReturn(Optional.of(student));
+        when(passwordEncoder.encode("student")).thenReturn("student");
+        when(studentRepository.save(any())).thenReturn(student);
+        assertEquals(studentService.editPassword("student"), true);
+    }
+
+    @Test
+    @Description("mocking subscribing action")
+    @WithMockUser(username = "student", authorities = {"STUDENT"})
+    void testSubscribe(){
+        Subscriber subscriber = Subscriber.builder().id(1).build();
+        when(studentRepository.findByUsername("student")).thenReturn(Optional.of(student));
+        when(studentRepository.findById(anyLong())).thenReturn(Optional.of(student));
+        when(subscriberRepository.save(any())).thenReturn(subscriber);
+        when(modelMapper.map(subscriber, SubscriberDTO.class)).thenReturn(subscriberDTO);
+        assertEquals(studentService.subscribe(2).getStreamerId(), 2);
+    }
+
 }

@@ -79,7 +79,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }catch(UnAuthorizedException ex){
             response.setStatus(403);
             response.setContentType("application/json");
-            response.getWriter().write("{'error': 'unauthorized'}");
+            response.getWriter().write("{\"error\": \"unauthorized\"}");
 
         }catch(ExpiredJwtException ex){
             response.setStatus(403);

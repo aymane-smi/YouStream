@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.Models.DTO.Stream.StreamDTO;
 import com.example.demo.Models.DTO.Stream.StreamTopDTO;
+import com.example.demo.Models.Entites.Stream;
 import com.example.demo.Repositories.StreamRepository;
 import com.example.demo.Repositories.TagRepository;
 import com.example.demo.Services.StreamService;
@@ -70,5 +71,11 @@ public class StreamServiceImpl implements StreamService{
     @Override
     public StreamDTO getStreamById(int id){
         return modelMapper.map(streamRepository.findById((long)id).get(), StreamDTO.class);
+    }
+
+    @Override
+    public List<StreamDTO> getUserStream(long id) {
+        List<Stream> streams = streamRepository.findByOwnerId(id);
+        return List.of(modelMapper.map(streams, StreamDTO[].class));
     }
 }

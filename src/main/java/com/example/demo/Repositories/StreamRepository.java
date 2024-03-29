@@ -13,4 +13,5 @@ import com.example.demo.Models.Entites.Stream;
 public interface StreamRepository extends JpaRepository<Stream, Long>{
     public List<Stream> findFirst10ByOrderByViewsNbrDesc();
     public Page<Stream> findByRestrictedIs(boolean restricted, Pageable peagable);
+    public List<Stream> findByOwnerId(long id);
 }

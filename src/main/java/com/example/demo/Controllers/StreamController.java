@@ -45,5 +45,10 @@ public class StreamController {
     public ResponseEntity<StreamDTO> getStreamById(@PathVariable("id") int id) {
         return new ResponseEntity<>(streamService.getStreamById(id), HttpStatus.OK);
     }
+    @GetMapping("/student/{id}")
+    public ResponseEntity<List<StreamDTO>> getMethodName(@PathVariable("id") long id) {
+        return new ResponseEntity<>(streamService.getUserStream(id), HttpStatus.OK);
+    }
+    
     
 }

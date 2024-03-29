@@ -84,7 +84,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }catch(ExpiredJwtException ex){
             response.setStatus(403);
             response.setContentType("application/json");
-            response.getWriter().write("{'error': 'expired'}");
+            response.getWriter().write("{\"error\": \"expired\"}");
 
         }
     }

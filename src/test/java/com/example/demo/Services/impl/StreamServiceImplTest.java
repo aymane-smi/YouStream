@@ -93,4 +93,14 @@ public class StreamServiceImplTest {
         when(modelMapper.map(stream, StreamDTO.class)).thenReturn(streamDTO);
         assertEquals(streamService.getStreamById(1).getId(), stream.getId());
     }
+
+    @Test
+    @DisplayName("get stream of a specific student")
+    void testGetUserStream(){
+        List<Stream> list = new ArrayList<>();
+        StreamDTO[] listDTO = {};
+        when(streamRepository.findByOwnerId(2)).thenReturn(list);
+        when(modelMapper.map(list, StreamDTO[].class)).thenReturn(listDTO);
+        assertEquals(streamService.getUserStream(2).size(), 0);
+    }
 }

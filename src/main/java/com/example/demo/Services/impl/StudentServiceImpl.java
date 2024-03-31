@@ -66,6 +66,7 @@ public class StudentServiceImpl implements StudentService {
             uuid,
             studentRepository.findByUsername(student.getUsername()).get()
         );
+        studentRefreshRepository.save(newRefresh);
         if(passwordEncoder.matches(student.getPassword(), user.getPassword())){
             String token = jwtService.generateToken(user);
             return SignedStudentDTO.builder().id(

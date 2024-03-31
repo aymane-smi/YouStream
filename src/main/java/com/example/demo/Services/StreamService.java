@@ -10,4 +10,5 @@ public interface StreamService {
     public List<StreamTopDTO> getAllStream(int offset);
     public List<StreamTopDTO> getStreamsByTag(String tag);
     public StreamDTO getStreamById(int id);
+    public List<StreamDTO> getUserStream(long id);
 }

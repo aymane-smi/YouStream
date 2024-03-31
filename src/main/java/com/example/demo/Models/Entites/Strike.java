@@ -25,4 +25,6 @@ public class Strike {
     private Student student;
     @ManyToOne(fetch = FetchType.LAZY)
     private Student claimer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Student streamer;
 }

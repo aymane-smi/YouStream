@@ -46,8 +46,10 @@ public class Student extends User implements UserDetails{
     private boolean isActive;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Comment> comments;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Student> claimers;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "claimer",cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Strike> claimers;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "streamer",cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Strike> streamer;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Stream> streams;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)

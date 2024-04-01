@@ -62,6 +62,7 @@ public class StudentServiceImplTest {
                                    .lastName("ln")
                                    .subscribers(fakeList)
                                    .password("student")
+                                   .isActive(true)
                                    .build();
         studentList = StudentListDTO.builder().id(1)
                                               .firstName("fn")
@@ -116,6 +117,14 @@ public class StudentServiceImplTest {
         when(subscriberRepository.save(any())).thenReturn(subscriber);
         when(modelMapper.map(subscriber, SubscriberDTO.class)).thenReturn(subscriberDTO);
         assertEquals(studentService.subscribe(2).getStreamerId(), 2);
+    }
+
+    @Test
+    @Description("toggle activation")
+    void testToggleActivation(){
+        when(studentRepository.findById(1L)).thenReturn(Optional.of(student));
+        when(studentRepository.save(any())).thenReturn(student);
+        assertEquals(studentService.toggleActivation(1), true);
     }
 
 }

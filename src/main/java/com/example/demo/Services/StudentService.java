@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.example.demo.Models.DTO.Student.SignedStudentDTO;
 import com.example.demo.Models.DTO.Student.StudentDTO;
+import com.example.demo.Models.DTO.Student.StudentInfoDTO;
 import com.example.demo.Models.DTO.Student.StudentListDTO;
 import com.example.demo.Models.DTO.Student.StudentLoginDTO;
 import com.example.demo.Models.DTO.Student.StudentRDTO;
@@ -19,4 +20,6 @@ public interface StudentService {
     public String editUsername(String username);
     public boolean editPassword(String password);
     public SubscriberDTO subscribe(long streamerId);
+    public List<StudentInfoDTO> getStudentsInfo();
+    public boolean toggleActivation(long id);
 }

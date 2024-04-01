@@ -16,6 +16,7 @@ import com.example.demo.Exceptions.NotAuthorizedException;
 import com.example.demo.Helper.Security;
 import com.example.demo.Models.DTO.Student.SignedStudentDTO;
 import com.example.demo.Models.DTO.Student.StudentDTO;
+import com.example.demo.Models.DTO.Student.StudentInfoDTO;
 import com.example.demo.Models.DTO.Student.StudentListDTO;
 import com.example.demo.Models.DTO.Student.StudentLoginDTO;
 import com.example.demo.Models.DTO.Student.StudentRDTO;
@@ -170,5 +171,23 @@ public class StudentServiceImpl implements StudentService {
         subscriberDTO.setSubscriberId(user.getId());
         return subscriberDTO;
     }
+
+    @Override
+    public List<StudentInfoDTO> getStudentsInfo() {
+        List<Student> list = studentRepository.findAll();
+        return List.of(modelMapper.map(list, StudentInfoDTO[].class));
+    }
+
+    @Override
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public boolean toggleActivation(long id) {
+        Student student = studentRepository.findById(id).get();
+        student.setActive(
+            !student.getActive()
+        );
+        studentRepository.save(student);
+        return student.getActive();
+    }
+        
     
 }

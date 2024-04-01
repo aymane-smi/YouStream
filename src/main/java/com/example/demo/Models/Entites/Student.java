@@ -84,4 +84,7 @@ public class Student extends User implements UserDetails{
     public boolean isEnabled() {
         return true;
     }
+    public boolean getActive(){
+        return this.isActive;
+    }
 }
